@@ -1,0 +1,109 @@
+/* General Styles */
+.form-body, .form-html {
+    margin: 0;
+    padding: 0;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    background-color: #ed8a8a;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
+  /* Signin and Signup Forms */
+  .form {
+    display: none; /* Hide both forms initially */
+  }
+  
+  /* Show active form when radio button is checked */
+  #signin-tab:checked ~ .signin-form,
+  #signup-tab:checked ~ .signup-form {
+    display: block; /* Display the selected form */
+  }
+  
+  /* Form Styles */
+  form {
+    margin-top: 1em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  input[type="text"], input[type="password"], input[type="email"] {
+    width: 100%;
+    padding: 1em;
+    margin-bottom: 1em;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1em;
+    box-sizing: border-box;
+  }
+  
+  /* Styles for text, password, and email inputs */
+  input[type="text"], input[type="password"], input[type="email"] {
+    width: 100%;
+    padding: 1em;
+    margin-bottom: 1em;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1em;
+    box-sizing: border-box;
+  }
+  
+  /* Styles for submit buttons */
+  button[type="submit"] {
+    width: 100%;
+    padding: 1em;
+    margin-bottom: 1em;
+    border: none;
+    border-radius: 4px;
+    font-size: 1em;
+    background-color: #333;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  button[type="submit"]:hover {
+    background-color: #ff4500;
+  }
+  
+  /* Styles for labels within the forms */
+  .form-label {
+    cursor: pointer;
+    padding: 1em 2em;
+    background-color: #ccc;
+    display: inline-block;
+    margin: 0.5em;
+    border-radius: 4px 4px 0 0;
+    transition: background-color 0.3s ease;
+    color: #001aff; /* Color for switch links */
+  }
+  
+  .form-label:hover {
+    color: #ff4500; /* Color for switch links */
+    cursor: pointer;
+  }
+  
+  /* Styles for paragraphs within the forms */
+  .form-text {
+    font-size: 0.9em;
+    margin-top: 1em;
+  }
+  
+  .form-text label:hover {
+    text-decoration: underline; /* Underline effect for switch links */
+  }
+  
+  .form-container {
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+    background-color: #fff; /* Background color for the container */
+    border-radius: 8px; /* Rounded corners for the container */
+    box-shadow: 0 0 10px rgba(9, 33, 64, 0.808); /* Shadow effect for the container */
+    padding: 2em; /* Padding inside the container */
+  }
+  
+  
+  
