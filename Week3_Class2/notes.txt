@@ -1,0 +1,47 @@
+this is failing 
+fetch('products.json')
+
+product_page.html:119 Error fetching products: 
+TypeError: Failed to fetch
+    at HTMLDocument.<anonymous> (product_page.html:84:13)
+(anonymous)	@	product_page.html:119
+
+
+-------------------------------------------------------------------------------------
+
+Running from the Local File System:
+
+Cause: If you are running the HTML file directly from the local file system (e.g., by opening the HTML file in a browser using file://), the fetch API may not work properly due to browser security restrictions (CORS issues or restrictions on fetching files from file://).
+
+Solution:
+
+Use a Local Server: Serve your files using a local development server rather than opening the HTML file directly in your browser. You can use Python, Node.js, or any simple HTTP server.
+
+-------------------------------------------------------------------------------------
+
+Running a local server is a straightforward way to serve your files and avoid issues like those caused by accessing files directly with the file:// protocol. Here’s how you can set up a simple local server using different methods, depending on your environment.
+
+1. Using Python's Built-in HTTP Server
+Python provides a built-in module to start an HTTP server, which is very easy to use.
+
+Python 3.x:
+Navigate to your project directory: Open a terminal or command prompt and change to the directory containing your product_page.html and products.json files.
+
+bash
+Copy code
+cd path/to/your/project
+Start the server: Run the following command:
+
+bash
+Copy code
+python -m http.server
+This will start a local server on port 8000 by default.
+
+Access your site: Open your web browser and go to http://localhost:8000. Your HTML files will be served from the current directory.
+
+If you need to specify a different port, use:
+
+bash
+Copy code
+python -m http.server 8080
+And access it via http://localhost:8080.

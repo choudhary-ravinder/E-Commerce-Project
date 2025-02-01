@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" class="form-html">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up / Sign In</title>
+    <link rel="stylesheet" href="styles.css">
+    <script>
+        // Function for client-side validation
+        function validateForm(event) {
+            const form = event.target;
+            const email = form.querySelector('input[name="email"]').value;
+            const password = form.querySelector('input[name="password"]').value;
+
+            if (form.id === 'signup-form') {
+                const confirmPassword = form.querySelector('input[name="confirmPassword"]').value;
+
+                if (password !== confirmPassword) {
+                    alert('Passwords do not match');
+                    event.preventDefault(); // Prevent form submission
+                    return false;
+                }
+
+                // Store user details in localStorage
+                localStorage.setItem('userEmail', email);
+                localStorage.setItem('userPassword', password);
+                alert('Sign up successful!');
+            }
+
+            if (form.id === 'signin-form') {
+                const storedEmail = localStorage.getItem('userEmail');
+                const storedPassword = localStorage.getItem('userPassword');
+
+                if (email !== storedEmail || password !== storedPassword) {
+                    alert('Invalid email or password');
+                    event.preventDefault(); // Prevent form submission
+                    return false;
+                }
+
+                alert('Sign in successful!');
+            }
+
+            return true;
+        }
+    </script>
+</head>
+<body class="form-body">
+    <div class="form-container">
+        <!-- Signin/Signup Toggle -->
+        <input type="radio" id="signin-tab" name="tab" checked>
+        <label class="form-label" for="signin-tab">Sign In</label>
+        
+        <input type="radio" id="signup-tab" name="tab">
+        <label class="form-label" for="signup-tab">Sign Up</label>
+
+        <!-- Signin Form -->
+        <div class="form signin-form">
+            <h2>Sign In</h2>
+            <form id="signin-form" action="#" method="POST" onsubmit="return validateForm(event)">
+                <input type="email" name="email" placeholder="Email Address" required>
+                <input type="password" name="password" placeholder="Password" required>
+                <button type="submit">Sign In</button>
+            </form>
+            <p class="form-text">Don't have an account? <label class="form-label" for="signup-tab">Sign Up Here</label></p>
+        </div>
+
+        <!-- Signup Form -->
+        <div class="form signup-form">
+            <h2>Sign Up</h2>
+            <form id="signup-form" action="#" method="POST" onsubmit="return validateForm(event)">
+                <input type="text" name="fullname" placeholder="Full Name" required>
+                <input type="email" name="email" placeholder="Email Address" required>
+                <input type="password" name="password" placeholder="Password" required>
+                <input type="password" name="confirmPassword" placeholder="Confirm Password" required>
+                <button type="submit">Sign Up</button>
+            </form>
+            <p class="form-text">Already have an account? <label class="form-label" for="signin-tab">Sign In Here</label></p>
+        </div>
+    </div>
+</body>
+</html>
