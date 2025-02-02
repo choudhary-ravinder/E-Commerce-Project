@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-Commerce Product Page</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s ease;
+            height: 100%;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .card-img-top {
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            max-width: 100%;
+            height: auto;
+            object-fit: cover;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .card-body {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between; /* Vertical alignment */
+            height: 100%;
+        }
+
+        .card-title {
+            font-weight: bold;
+            color: #333;
+            font-size: 1.2rem;
+        }
+
+        .card-text {
+            color: #666;
+        }
+
+        .btn {
+            /* Utilizing Bootstrap utility classes */
+            margin-top: auto; /* Align button to bottom of card body */
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .quantity-input {
+            width: 60px;
+            margin-right: 10px;
+        }
+
+        .error-message {
+            color: #dc3545;
+            font-weight: bold;
+            margin-top: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="mb-4">E-Commerce Product Page</h1>
+
+        <!-- Search and Price Range Filter Section -->
+        <div class="d-flex align-items-center mb-4">
+            <!-- Search input -->
+            <input type="text" id="search" class="form-control mr-3" placeholder="Search for products..." style="flex: 1;">
+            
+            <!-- Price range dropdown -->
+            <div class="select-wrapper" style="flex: 0 0 25%;">
+                <select id="price-range" class="form-control">
+                    <option value="">Select Price Range</option>
+                    <option value="0-50">Under $50</option>
+                    <option value="51-100">$51 - $100</option>
+                    <option value="101-200">$101 - $200</option>
+                    <option value="201-300">$201 - $300</option>
+                    <option value="301-500">$301 - $500</option>
+                    <option value="500-1000">$500 - $1000</option>
+                </select>
+            </div>
+        </div>
+
+        <div id="product-list" class="row">
+            <!-- Product cards will be dynamically added here -->
+        </div>
+
+        <div id="error-message" class="error-message"></div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            fetch('products.json')
+                .then(response => response.json())
+                .then(data => {
+                    window.products = data;
+                    displayProducts(data);
+                })
+                .catch(error => {
+                    console.error('Error fetching products:', error);
+                    document.getElementById('error-message').textContent = 'Failed to load products. Please try again later.';
+                });
+        });
+
+        function displayProducts(products) {
+            const productList = document.getElementById('product-list');
+            productList.innerHTML = ''; // Clear existing product cards
+            products.forEach(product => {
+                const card = document.createElement('div');
+                card.classList.add('col-lg-3', 'col-md-4', 'col-sm-6', 'mb-4'); // Adjusted column classes
+
+                card.innerHTML = `
+                    <div class="card h-100"> <!-- Ensure cards are of equal height -->
+                        <img src="${product.image}" class="card-img-top" alt="${product.name}">
+                        <div class="card-body"> <!-- Use flexbox for vertical alignment -->
+                            <h5 class="card-title">${product.name}</h5>
+                            <p class="card-text">${product.description}</p>
+                            <p class="card-text font-weight-bold">$${product.price.toFixed(2)}</p>
+                            <div class="d-flex align-items-center">
+                                <input type="number" class="quantity-input" value="1" min="1">
+                                <a href="#" class="btn btn-primary add-to-cart" data-product='${JSON.stringify(product)}'>Add to Cart</a>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                productList.appendChild(card);
+            });
+
+            document.querySelectorAll('.add-to-cart').forEach(button => {
+                button.addEventListener('click', (event) => {
+                    event.preventDefault();
+                    const product = JSON.parse(event.target.getAttribute('data-product'));
+                    const quantityInput = event.target.previousElementSibling;
+                    const quantity = parseInt(quantityInput.value);
+                    addToCart(product, quantity);
+                });
+            });
+        }
+
+        function addToCart(product, quantity) {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const existingProduct = cart.find(item => item.name === product.name);
+            if (existingProduct) {
+                existingProduct.quantity += quantity;
+            } else {
+                product.quantity = quantity;
+                cart.push(product);
+            }
+            localStorage.setItem('cart', JSON.stringify(cart));
+            alert('Product added to cart!');
+        }
+
+        function handleSearch() {
+            try{
+                const query = document.getElementById('search').value.toLowerCase();
+                const filteredProducts = window.products.filter(product => 
+                    product.name.toLowerCase().includes(query) ||
+                    product.description.toLowerCase().includes(query)
+                );
+                displayProducts(filteredProducts); // Display only the filtered products
+            } catch (error) {
+                console.error('Error handling search:', error);
+                document.getElementById('error-message').textContent = 'Error processing search. Please try again.';
+            }
+        }
+
+        function applyFilters() {
+                const query = document.getElementById('search').value.toLowerCase();
+                const priceRange = document.getElementById('price-range').value;
+
+                let minPrice = 0;
+                let maxPrice = Infinity;
+
+                if (priceRange) {
+                        [minPrice, maxPrice] = priceRange.split('-').map(Number);
+                }
+
+                // Filter products based on query and price range
+                const filteredProducts = window.products.filter(product => {
+                    const isNameMatch = product.name.toLowerCase().includes(query);
+                    const isDescriptionMatch = product.description.toLowerCase().includes(query);
+                    const isPriceMatch = product.price >= minPrice && product.price <= maxPrice;
+
+                    return (isNameMatch || isDescriptionMatch) && isPriceMatch;
+                });
+
+                displayProducts(filteredProducts); // Update displayed products
+            }
+        // Attach event listeners to price range
+        document.getElementById('price-range').addEventListener('change', applyFilters);
+
+        function debounce(func, delay) {
+            let timerId;
+            return function (...args) {
+                clearTimeout(timerId);
+                timerId = setTimeout(() => func.apply(this, args), delay);
+            };
+        }
+
+        function throttle(func, limit) {
+            let lastFunc;
+            let lastRan = 0;
+            return function (...args) {
+                const context = this;
+                const now = Date.now();
+                if (now - lastRan >= limit) {
+                    func.apply(context, args);
+                    lastRan = now;
+                } else {
+                    clearTimeout(lastFunc);
+                    lastFunc = setTimeout(function () {
+                        func.apply(context, args);
+                        lastRan = now;
+                    }, limit - (now - lastRan));
+                }
+            };
+        }
+
+        const searchInput = document.getElementById('search');
+        searchInput.addEventListener('input', function() {
+            // const query = searchInput.value; // Get the current input value
+            // handleSearch(query); // Call the search handler with the query
+            handleSearch();
+        });
+        
+        // searchInput.addEventListener('input', debounce(function () {
+        //     handleSearch(this.value);
+        // }, 300)); // Debounce delay of 300ms
+
+
+        // Uncomment to use throttling instead of debouncing
+        // searchInput.addEventListener('input', throttle(function () {
+        //     handleSearch(this.value);
+        // }, 300)); // Throttle limit of 300ms
+
+    </script>
+</body>
+</html>

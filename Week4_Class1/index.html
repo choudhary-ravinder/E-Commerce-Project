@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-commerce Landing Page</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Header Section -->
+    <header>
+        <nav class="navbar">
+            <div class="logo-container">
+                <img class="logo" src="https://via.placeholder.com/150x50?text=ShopLogo" alt="Shop Logo">
+            </div>
+            <ul class="nav-links">
+                <li><a href="#">Home</a></li>
+                <li><a href="product_page.html" target="_blank">Shop</a></li>
+                <li><a href="cart.html" target="_blank">Cart</a></li>
+                <li><a href="#">Contact</a></li>
+                <li><a href="signup-signin.html" target="_blank">Login</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Main Content Sections -->
+    <section class="hero">
+        <div class="container">
+            <h2>Welcome to Our Online Store</h2>
+            <p>Discover the best products at unbeatable prices</p>
+            <button class="cta-button"><a href="product_page.html" style="text-decoration: none; color: white;">Shop Now</a></button>
+            <p class="offer-text">Special Offer! Get 20% off on all electronics</p>
+        </div>
+    </section>
+    
+    <section class="categories">
+        <div class="container">
+            <h2 class="category-title">Shop by Category</h2>
+            <div class="grid">
+                <div class="category">
+                    <img src="https://placehold.co/200/f1c1b9/white?text=Electronics" alt="Electronics">
+                    <h3>Electronics</h3>
+                </div>
+                <div class="category">
+                    <img src="https://placehold.co/200/f1c1b9/white?text=Fashion" alt="Fashion">
+                    <h3>Fashion</h3>
+                </div>
+                <div class="category">
+                    <img src="https://placehold.co/200/f1c1b9/white?text=Home+Decor" alt="Home Decor">
+                    <h3>Home Decor</h3>
+                </div>
+                <div class="category">
+                    <img src="https://placehold.co/200/f1c1b9/white?text=Books" alt="Books">
+                    <h3>Books</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="featured-products">
+        <div class="container">
+            <h2 class="category-title">Featured Products</h2>
+            <div class="grid" id="featured-products">
+                <!-- Products will be dynamically inserted here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Product Features Comparison Section -->
+    <section class="product-features">
+        <div class="container">
+            <h2>Product Features Comparison</h2>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th rowspan="2">Product</th>
+                        <th rowspan="2">Price</th>
+                        <th rowspan="2">Features</th>
+                        <th colspan="2">Details</th>
+                    </tr>
+                    <tr>
+                        <th>Size</th>
+                        <th>Weight</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Product 1</td>
+                        <td>$49.99</td>
+                        <td>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</td>
+                        <td>Large</td>
+                        <td>1.5 kg</td>
+                    </tr>
+                    <tr>
+                        <td>Product 2</td>
+                        <td>$59.99</td>
+                        <td>Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</td>
+                        <td>Medium</td>
+                        <td>1.2 kg</td>
+                    </tr>
+                    <tr>
+                        <td>Product 3</td>
+                        <td>$69.99</td>
+                        <td>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</td>
+                        <td>Small</td>
+                        <td>0.8 kg</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <section class="testimonials">
+        <div class="container">
+            <h2>Customer Testimonials</h2>
+            <div class="grid">
+                <div class="testimonial">
+                    <p>"Amazing products! Fast shipping and great customer service."</p>
+                    <h3>- John Doe</h3>
+                </div>
+                <div class="testimonial">
+                    <p>"I love shopping here. The prices are unbeatable."</p>
+                    <h3>- Jane Smith</h3>
+                </div>
+                <div class="testimonial">
+                    <p>"Fantastic quality. Will definitely buy again."</p>
+                    <h3>- Bob Johnson</h3>
+                </div>
+                <div class="testimonial">
+                    <p>"Great variety and easy to use website. Highly recommend!"</p>
+                    <h3>- Alice Brown</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Section -->
+    <footer class="footer">
+        <p>&copy; 2024 Your E-commerce Store. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Callback example
+        function fetchDataCallback(url, callback) {
+            const xhr = new XMLHttpRequest(); // Create a new XMLHttpRequest object
+            xhr.open('GET', url, true); // Initialize it with GET method and URL
+            xhr.onload = function() {
+                if (xhr.status >= 200 && xhr.status < 300) {
+                    // If the request is successful, call the callback with the response
+                    callback(null, JSON.parse(xhr.responseText));
+                } else {
+                    // If there's an error, call the callback with the error
+                    callback(xhr.statusText, null);
+                }
+            };
+            xhr.onerror = function() {
+                // Handle network errors
+                callback(xhr.statusText, null);
+            };
+            xhr.send(); // Send the request
+        }
+
+        function fetchDataWithCallbackBasedPromise(url) {
+            return new Promise((resolve, reject) => {
+                fetchDataCallback(url, (error, data) => {
+                    if (error) {
+                        reject(error); // Reject promise with error
+                    } else {
+                        resolve(data); // Resolve promise with data
+                    }
+                });
+            });
+        }
+
+        // Example usage of callback
+        // fetchDataCallback('https://fakestoreapi.com/products', (error, data) => {
+        //     if (error) {
+        //         console.error('Error fetching products:', error);
+        //         return;
+        //     }
+        //     // Process the data if there's no error
+        //     console.log('Products fetched with callback:', data);
+        // });
+
+        // ---------------------------------------------------------------------------------
+        // ---------------------------------------------------------------------------------
+        // ---------------------------------------------------------------------------------
+
+        // Promises example using XMLHttpRequest()
+        // function fetchDataPromise(url) {
+        //     return new Promise((resolve, reject) => {
+        //         const xhr = new XMLHttpRequest(); // Create a new XMLHttpRequest object
+        //         xhr.open('GET', url, true); // Initialize it with GET method and URL
+        //         xhr.onload = function() {
+        //             if (xhr.status >= 200 && xhr.status < 300) {
+        //                 // Resolve the promise with the response
+        //                 resolve(JSON.parse(xhr.responseText));
+        //             } else {
+        //                 // Reject the promise with the status text
+        //                 reject(xhr.statusText);
+        //             }
+        //         };
+        //         xhr.onerror = function() {
+        //             // Reject the promise with the status text
+        //             reject(xhr.statusText);
+        //         };
+        //         xhr.send(); // Send the request
+        //     });
+        // }
+
+        // Promises example using fetch API
+        function fetchDataPromise(url) {
+            return fetch(url)  // Use the passed-in 'url' parameter
+                .then(res => {
+                    if (!res.ok) {
+                        throw new Error('Network response was not ok ' + res.statusText);
+                    }
+                    return res.json();  // Notice the parentheses to call the method
+                })
+                .catch(err => {
+                    console.error('There was a problem with the fetch operation:', err);
+                });
+        }
+
+        // Example usage of promises
+        // fetchDataPromise('https://fakestoreapi.com/products')
+        //     .then(data => {
+        //         // Process the data
+        //         console.log('Products fetched with promise:', data);
+        //     })
+        //     .catch(error => {
+        //         // Handle errors
+        //         console.error('Error fetching products:', error);
+        //     });
+
+        // ---------------------------------------------------------------------------------
+        // ---------------------------------------------------------------------------------
+        // ---------------------------------------------------------------------------------
+
+        // Async/Await example with Fetch API
+        async function fetchDataAsync(url) {
+            try {
+                const response = await fetch(url); // Await the fetch request
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+                const data = await response.json(); // Await the response conversion to JSON
+                return data;
+            } catch (error) {
+                console.error('Error fetching products with async/await:', error);
+                throw error;
+            }
+        }
+
+        // ---------------------------------------------------------------------------------
+        // ---------------------------------------------------------------------------------
+        // ---------------------------------------------------------------------------------
+
+        // Example usage of async/await
+        document.addEventListener('DOMContentLoaded', async () => {
+            const featuredProductsContainer = document.getElementById('featured-products');
+            const apiUrl = 'https://fakestoreapi.com/products'; // Example API URL
+
+            try {
+                // const data = await fetchDataWithCallbackBasedPromise(apiUrl); // Await the callback-based function
+                const data = await fetchDataPromise(apiUrl); // Await the promise-based function
+                // const data = await fetchDataAsync(apiUrl); // Await the async function
+
+                if (data.length > 0) {
+                    featuredProductsContainer.innerHTML = ''; // Clear any existing items
+                    data.slice(0, 10).forEach(product => {
+                        const productElement = document.createElement('div');
+                        productElement.className = 'product';
+                        productElement.innerHTML = `
+                            <img src="${product.image}" alt="${product.title}">
+                            <h3>${product.title}</h3>
+                            <p>$${product.price.toFixed(2)}</p>
+                        `;
+                        featuredProductsContainer.appendChild(productElement);
+                    });
+                } else {
+                    featuredProductsContainer.innerHTML = '<p>No products available</p>';
+                }
+            } catch (error) {
+                console.error('Error displaying products:', error);
+            }
+        });
+    </script>
+</body>
+</html>
