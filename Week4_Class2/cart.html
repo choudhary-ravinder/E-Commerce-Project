@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="cart-container">
+        <h1 class="cart-title">Shopping Cart</h1>
+        <div class="cart-items-container" id="cart-items">
+            <!-- Cart items will be appended here -->
+        </div>
+        <div class="cart-summary">
+            <p id="cart-total">Total: $0.00</p>
+            <button class="cart-checkout-button" id="checkout-button">Checkout</button>
+        </div>
+    </div>
+    <script>
+document.addEventListener('DOMContentLoaded', () => {
+    const cartItemsContainer = document.getElementById('cart-items');
+    const cartTotalElement = document.getElementById('cart-total');
+    const checkoutButton = document.getElementById('checkout-button');
+
+    // Function to load cart items from localStorage and display them in the cart
+    function loadCartItems() {
+        const cart = JSON.parse(localStorage.getItem('cart')) || [];
+        if (cart.length > 0) {
+            cartItemsContainer.innerHTML = ''; // Clear any existing items
+
+            cart.forEach((product, index) => {
+                const cartItem = document.createElement('div');
+                cartItem.className = 'cart-item';
+
+                cartItem.innerHTML = `
+                    <img src="${product.image}" alt="${product.name}">
+                    <div class="cart-item-details">
+                        <h3 class="cart-item-title">${product.name}</h3>
+                        <p class="cart-item-price">$${product.price.toFixed(2)}</p>
+                        <div class="cart-item-actions">
+                            <input type="number" value="${product.quantity}" min="1" class="quantity-input">
+                            <button class="remove-button">Remove</button>
+                        </div>
+                    </div>
+                `;
+
+                cartItemsContainer.appendChild(cartItem);
+
+                // Add event listeners
+                const removeButton = cartItem.querySelector('.remove-button');
+                const quantityInput = cartItem.querySelector('.quantity-input');
+
+                removeButton.addEventListener('click', () => {
+                    cart.splice(index, 1);
+                    localStorage.setItem('cart', JSON.stringify(cart));
+                    loadCartItems();
+                });
+
+                quantityInput.addEventListener('change', (event) => {
+                    product.quantity = parseInt(event.target.value);
+                    localStorage.setItem('cart', JSON.stringify(cart));
+                    updateCartTotal();
+                });
+            });
+
+            updateCartTotal();
+        } else {
+            cartItemsContainer.innerHTML = '<p>Your cart is empty</p>';
+        }
+    }
+
+    // Function to update the cart total
+    function updateCartTotal() {
+        let total = 0;
+        const cart = JSON.parse(localStorage.getItem('cart')) || [];
+        cart.forEach(item => {
+            total += item.price * item.quantity;
+        });
+        cartTotalElement.textContent = `Total: $${total.toFixed(2)}`;
+    }
+
+    // Initialize cart items
+    loadCartItems();
+
+    // Handle checkout button click
+    checkoutButton.addEventListener('click', () => {
+        alert('Proceeding to checkout');
+    });
+});
+    </script>
+</body>
+</html>

@@ -207,7 +207,19 @@
             }
         // Attach event listeners to price range
         document.getElementById('price-range').addEventListener('change', applyFilters);
+        document.getElementById('search').addEventListener('input', handleSearch);
 
+
+
+
+
+
+
+
+
+
+
+        
         function debounce(func, delay) {
             let timerId;
             return function (...args) {
@@ -235,12 +247,12 @@
             };
         }
 
-        const searchInput = document.getElementById('search');
-        searchInput.addEventListener('input', function() {
+        // const searchInput = document.getElementById('search');
+        // searchInput.addEventListener('input', function() {
             // const query = searchInput.value; // Get the current input value
             // handleSearch(query); // Call the search handler with the query
             handleSearch();
-        });
+        // });
         
         // searchInput.addEventListener('input', debounce(function () {
         //     handleSearch(this.value);
